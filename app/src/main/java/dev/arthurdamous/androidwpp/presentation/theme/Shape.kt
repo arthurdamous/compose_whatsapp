@@ -1,4 +1,4 @@
-package dev.arthurdamous.androidwpp.ui.theme
+package dev.arthurdamous.androidwpp.presentation.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

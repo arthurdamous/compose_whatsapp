@@ -1,5 +1,6 @@
-package dev.arthurdamous.androidwpp
+package dev.arthurdamous.androidwpp.presentation
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,10 +11,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -21,152 +23,31 @@ import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
-import dev.arthurdamous.androidwpp.domain.model.Message
-import dev.arthurdamous.androidwpp.ui.theme.AndroidWppTheme
+import androidx.hilt.navigation.compose.hiltViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import dev.arthurdamous.androidwpp.R
+import dev.arthurdamous.androidwpp.presentation.theme.AndroidWppTheme
+import java.time.LocalDateTime
 
-val listOfMessages = mutableListOf(
-    Message(
-        id = 0,
-        message = "Olá tudo bem ?",
-        hour = "00:23",
-        isSent = true
-    ),
-    Message(
-        id = 1,
-        message = "Tudo, e com você ?",
-        hour = "00:24",
-        isSent = false
-    ),
-    Message(
-        id = 3,
-        message = "Que bom, o que vais fazer hoje ?",
-        hour = "00:25",
-        isSent = true
-    ),
-    Message(
-        id = 4,
-        message = "Bom, hoje vou a praia",
-        hour = "00:26",
-        isSent = false
-    ),
-    Message(
-        id = 5,
-        message = "Depois vou a sorveteria",
-        hour = "00:27",
-        isSent = false
-    ),
-    Message(
-        id = 6,
-        message = "Por fim, vou visitar meus amigos",
-        hour = "00:27",
-        isSent = false
-    ),
-    Message(
-        id = 7,
-        message = "E você ?",
-        hour = "00:28",
-        isSent = false
-    ),
-    Message(
-        id = 0,
-        message = "Olá tudo bem ?",
-        hour = "00:23",
-        isSent = true
-    ),
-    Message(
-        id = 1,
-        message = "Tudo, e com você ?",
-        hour = "00:24",
-        isSent = false
-    ),
-    Message(
-        id = 3,
-        message = "Que bom, o que vais fazer hoje ?",
-        hour = "00:25",
-        isSent = true
-    ),
-    Message(
-        id = 4,
-        message = "Bom, hoje vou a praia",
-        hour = "00:26",
-        isSent = false
-    ),
-    Message(
-        id = 5,
-        message = "Depois vou a sorveteria",
-        hour = "00:27",
-        isSent = false
-    ),
-    Message(
-        id = 6,
-        message = "Por fim, vou visitar meus amigos",
-        hour = "00:27",
-        isSent = false
-    ),
-    Message(
-        id = 7,
-        message = "E você ?",
-        hour = "00:28",
-        isSent = false
-    ),
-    Message(
-        id = 0,
-        message = "Olá tudo bem ?",
-        hour = "00:23",
-        isSent = true
-    ),
-    Message(
-        id = 1,
-        message = "Tudo, e com você ?",
-        hour = "00:24",
-        isSent = false
-    ),
-    Message(
-        id = 3,
-        message = "Que bom, o que vais fazer hoje ?",
-        hour = "00:25",
-        isSent = true
-    ),
-    Message(
-        id = 4,
-        message = "Bom, hoje vou a praia",
-        hour = "00:26",
-        isSent = false
-    ),
-    Message(
-        id = 5,
-        message = "Depois vou a sorveteria",
-        hour = "00:27",
-        isSent = false
-    ),
-    Message(
-        id = 6,
-        message = "Por fim, vou visitar meus amigos",
-        hour = "00:27",
-        isSent = false
-    ),
-    Message(
-        id = 7,
-        message = "E você ?",
-        hour = "00:28",
-        isSent = false
-    ),
-)
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val viewModel: MainViewModel = hiltViewModel()
+            val state = viewModel.state.value
             AndroidWppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -190,18 +71,30 @@ class MainActivity : ComponentActivity() {
                             )
                             LazyColumn(
                                 contentPadding = it,
+                                reverseLayout = false,
                                 verticalArrangement = Arrangement.Bottom,
                                 modifier = Modifier
                                     .fillMaxSize()
                             ) {
-                                items(listOfMessages.size) { i ->
+                                items(count = state.listOfMessages.size) { i ->
                                     if (i < 1) {
                                         CardDate()
                                     }
                                     MessageItem(
-                                        message = listOfMessages[i].message,
-                                        date = listOfMessages[i].hour,
-                                        isSent = listOfMessages[i].isSent
+                                        message = state.listOfMessages[i].message,
+                                        date =
+                                        "${
+                                            LocalDateTime
+                                                .parse(state.listOfMessages[i].hour).hour
+                                        }:${
+                                            if (LocalDateTime.parse(
+                                                    state.listOfMessages[i].hour
+                                                ).minute == 60
+                                            ) "00" else LocalDateTime.parse(
+                                                state.listOfMessages[i].hour
+                                            ).minute
+                                        }",
+                                        isSent = state.listOfMessages[i].isSent
                                     )
                                 }
                             }
@@ -219,9 +112,7 @@ fun TopBar(
 ) {
     val image = R.drawable.photo2
 
-    TopAppBar(
-
-    ) {
+    TopAppBar {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -325,10 +216,11 @@ fun MessageItem(
 }
 
 @Composable
-fun ChatBar() {
-    var message by remember {
-        mutableStateOf("")
-    }
+fun ChatBar(
+    viewModel: MainViewModel = hiltViewModel()
+) {
+
+    val state = viewModel.state.value
 
     Box(
         modifier = Modifier
@@ -346,8 +238,20 @@ fun ChatBar() {
                 modifier = Modifier.weight(0.9f)
             ) {
                 OutlinedTextField(
-                    value = message,
-                    onValueChange = { message = it },
+                    value = state.messageText,
+                    onValueChange = { text ->
+                        viewModel.onEvent(
+                            MessageEvent.OnChangeTextMessage(
+                                text
+                            )
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        keyboardType = KeyboardType.Text,
+                        autoCorrect = true,
+                        imeAction = ImeAction.Go
+                    ),
                     placeholder = { Text(text = "Type a message") },
                     leadingIcon = {
                         Icon(
@@ -377,31 +281,17 @@ fun ChatBar() {
                         .background(color = Color.White, shape = RoundedCornerShape(4.dp))
                 )
             }
-            Box(
-                contentAlignment = Center,
-                modifier = Modifier
-                    .background(
-                        color = MaterialTheme.colors.primary,
-                        shape = RoundedCornerShape(100.dp)
-                    )
-                    .clip(RoundedCornerShape(100.dp))
-                    .size(40.dp)
-                    .padding(8.dp)
-                    .weight(0.1f)
-                    .clickable {
-                        listOfMessages.add(
-                            Message(
-                                10,
-                                message = message,
-                                hour = "00:44",
-                                isSent = true
-                            )
-                        )
-                    }
+            IconButton(
+                onClick = { viewModel.onEvent(MessageEvent.OnMessageSent(state.messageText)) },
+                enabled = state.isEnabledToSendMessage,
+                modifier = Modifier.background(
+                    color = if (state.isEnabledToSendMessage) MaterialTheme.colors.primary else Color.Gray,
+                    shape = RoundedCornerShape(100.dp)
+                )
             ) {
                 Icon(
-                    imageVector = Icons.Default.Send,
-                    contentDescription = "",
+                    imageVector = Icons.Filled.Send,
+                    contentDescription = "Send Message",
                     tint = Color.White
                 )
             }
