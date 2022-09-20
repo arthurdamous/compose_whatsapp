@@ -1,4 +1,4 @@
-package dev.arthurdamous.androidwpp.domain.use_case
+package dev.arthurdamous.androidwpp.feature_chat.domain.use_case
 
 data class MessageUseCase(
     val sentMessage: SentMessage,

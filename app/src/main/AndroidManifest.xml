@@ -14,7 +14,7 @@
         android:theme="@style/Theme.AndroidWpp"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name="dev.arthurdamous.androidwpp.feature_chat.presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.AndroidWpp">
             <intent-filter>

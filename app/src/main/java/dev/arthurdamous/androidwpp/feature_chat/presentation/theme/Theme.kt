@@ -1,4 +1,4 @@
-package dev.arthurdamous.androidwpp.presentation.theme
+package dev.arthurdamous.androidwpp.feature_chat.presentation.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

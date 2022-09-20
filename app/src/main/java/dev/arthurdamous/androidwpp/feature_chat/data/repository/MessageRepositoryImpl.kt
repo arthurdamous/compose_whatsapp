@@ -1,12 +1,10 @@
-package dev.arthurdamous.androidwpp.data.repository
+package dev.arthurdamous.androidwpp.feature_chat.data.repository
 
 import android.util.Log
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.snapshots
-import dev.arthurdamous.androidwpp.domain.model.Message
-import dev.arthurdamous.androidwpp.domain.repository.MessageRepository
+import dev.arthurdamous.androidwpp.feature_chat.domain.model.Message
+import dev.arthurdamous.androidwpp.feature_chat.domain.repository.MessageRepository
 import dev.arthurdamous.androidwpp.util.Constants.COLLECTION_NAME_MESSAGES
 import dev.arthurdamous.androidwpp.util.Resource
 import dev.arthurdamous.androidwpp.util.SimpleResource

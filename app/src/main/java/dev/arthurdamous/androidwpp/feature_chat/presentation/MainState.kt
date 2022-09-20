@@ -1,6 +1,6 @@
-package dev.arthurdamous.androidwpp.presentation
+package dev.arthurdamous.androidwpp.feature_chat.presentation
 
-import dev.arthurdamous.androidwpp.domain.model.Message
+import dev.arthurdamous.androidwpp.feature_chat.domain.model.Message
 
 data class MainState(
     val messageText: String = "",

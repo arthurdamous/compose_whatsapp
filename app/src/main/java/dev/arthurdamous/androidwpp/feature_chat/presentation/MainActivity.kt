@@ -1,4 +1,4 @@
-package dev.arthurdamous.androidwpp.presentation
+package dev.arthurdamous.androidwpp.feature_chat.presentation
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -35,71 +35,87 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import dev.arthurdamous.androidwpp.NavGraph
 import dev.arthurdamous.androidwpp.R
-import dev.arthurdamous.androidwpp.presentation.theme.AndroidWppTheme
+import dev.arthurdamous.androidwpp.feature_chat.presentation.theme.AndroidWppTheme
 import java.time.LocalDateTime
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val viewModel: MainViewModel = hiltViewModel()
-            val state = viewModel.state.value
+
             AndroidWppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Scaffold(
-                            topBar = {
-                                TopBar(name = "Arthur")
-                            },
-                            bottomBar = {
-                                ChatBar()
-                            }
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.whatsapp_2),
-                                contentDescription = "",
-                                modifier = Modifier.fillMaxSize(),
-                                contentScale = ContentScale.FillWidth,
-                                alignment = Center
-                            )
-                            LazyColumn(
-                                contentPadding = it,
-                                reverseLayout = false,
-                                verticalArrangement = Arrangement.Bottom,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                            ) {
-                                items(count = state.listOfMessages.size) { i ->
-                                    if (i < 1) {
-                                        CardDate()
-                                    }
-                                    MessageItem(
-                                        message = state.listOfMessages[i].message,
-                                        date =
-                                        "${
-                                            LocalDateTime
-                                                .parse(state.listOfMessages[i].hour).hour
-                                        }:${
-                                            if (LocalDateTime.parse(
-                                                    state.listOfMessages[i].hour
-                                                ).minute == 60
-                                            ) "00" else LocalDateTime.parse(
-                                                state.listOfMessages[i].hour
-                                            ).minute
-                                        }",
-                                        isSent = state.listOfMessages[i].isSent
-                                    )
-                                }
-                            }
-                        }
+                    val navController = rememberNavController()
+                    val scaffoldState = rememberScaffoldState()
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        NavGraph(
+                            navController = navController,
+                            scaffoldState = scaffoldState
+                        )
                     }
+                }
+            }
+        }
+    }
+}
+
+@SuppressLint("NewApi")
+@Composable
+fun ChatScreen(viewModel: MainViewModel = hiltViewModel()) {
+    val state = viewModel.state.value
+    Box(modifier = Modifier.fillMaxSize()) {
+        Scaffold(
+            topBar = {
+                TopBar(name = "Arthur")
+            },
+            bottomBar = {
+                ChatBar()
+            }
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.whatsapp_2),
+                contentDescription = "",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.FillWidth,
+                alignment = Center
+            )
+            LazyColumn(
+                contentPadding = it,
+                reverseLayout = false,
+                verticalArrangement = Arrangement.Bottom,
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                items(count = state.listOfMessages.size) { i ->
+                    if (i < 1) {
+                        CardDate()
+                    }
+                    MessageItem(
+                        message = state.listOfMessages[i].message,
+                        date =
+                        "${
+                            LocalDateTime
+                                .parse(state.listOfMessages[i].hour).hour
+                        }:${
+                            if (LocalDateTime.parse(
+                                    state.listOfMessages[i].hour
+                                ).minute == 60
+                            ) "00" else LocalDateTime.parse(
+                                state.listOfMessages[i].hour
+                            ).minute
+                        }",
+                        isSent = state.listOfMessages[i].isSent
+                    )
                 }
             }
         }

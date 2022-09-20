@@ -1,4 +1,4 @@
-package dev.arthurdamous.androidwpp.presentation
+package dev.arthurdamous.androidwpp.feature_chat.presentation
 
 import android.util.Log
 import androidx.compose.runtime.State
@@ -6,11 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.arthurdamous.androidwpp.domain.use_case.MessageUseCase
+import dev.arthurdamous.androidwpp.feature_chat.domain.use_case.MessageUseCase
 import dev.arthurdamous.androidwpp.util.Resource
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

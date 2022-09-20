@@ -1,7 +1,7 @@
-package dev.arthurdamous.androidwpp.domain.use_case
+package dev.arthurdamous.androidwpp.feature_chat.domain.use_case
 
-import dev.arthurdamous.androidwpp.domain.model.Message
-import dev.arthurdamous.androidwpp.domain.repository.MessageRepository
+import dev.arthurdamous.androidwpp.feature_chat.domain.model.Message
+import dev.arthurdamous.androidwpp.feature_chat.domain.repository.MessageRepository
 import dev.arthurdamous.androidwpp.util.Resource
 import kotlinx.coroutines.flow.Flow
 

@@ -1,4 +1,4 @@
-package dev.arthurdamous.androidwpp.domain.model
+package dev.arthurdamous.androidwpp.feature_chat.domain.model
 
 data class Message(
     val id: String,
