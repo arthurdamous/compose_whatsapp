@@ -16,8 +16,8 @@ class UserRepositoryImpl(
             val request = firebaseAuth.signInWithEmailAndPassword(
                 email, password
             )
-            if (request.isSuccessful || request.isComplete) {
-                println(request.result)
+            if (request.isSuccessful) {
+                println(request.result.user)
                 Resource.Success(Unit)
             } else {
                 Resource.Error("")
